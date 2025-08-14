@@ -4,14 +4,14 @@ import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDJ-0cptQFiTZNKOD3YrHmHIjVN9Rk1jSs",
-  authDomain: "clinte-25027.firebaseapp.com",
-  databaseURL: "https://clinte-25027-default-rtdb.firebaseio.com",
-  projectId: "clinte-25027",
-  storageBucket: "clinte-25027.firebasestorage.app",
-  messagingSenderId: "164388154350",
-  appId: "1:164388154350:web:33d2bc724edfe4e0dc3cff",
-  measurementId: "G-XJVRTMJHEV"
+  apiKey: "AIzaSyC4LIAb47mCRchGaqOLPe6mNXMZqo2Zrzs",
+  authDomain: "zainb-68cfa.firebaseapp.com",
+  databaseURL: "https://zainb-68cfa-default-rtdb.firebaseio.com",
+  projectId: "zainb-68cfa",
+  storageBucket: "zainb-68cfa.firebasestorage.app",
+  messagingSenderId: "753461913184",
+  appId: "1:753461913184:web:90252cc2436aaf7dd2c505",
+  measurementId: "G-FYSRX4YJW4"
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
