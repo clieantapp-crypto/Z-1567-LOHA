@@ -4,14 +4,15 @@ import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD2DWxuyywsRl1AjDv8cRWCixKIgN3nIno",
-  authDomain: "handy-tiger-452502-u8.firebaseapp.com",
-  databaseURL: "https://handy-tiger-452502-u8-default-rtdb.firebaseio.com",
-  projectId: "handy-tiger-452502-u8",
-  storageBucket: "handy-tiger-452502-u8.firebasestorage.app",
-  messagingSenderId: "454232781530",
-  appId: "1:454232781530:web:b387fd6c890376a682ebe3",
-  measurementId: "G-VFPVJKPEZ0"};
+  apiKey: "AIzaSyDgFnMZD4NHBPe6cAT1CtL1amIBqmaKzEU",
+  authDomain: "ziolm-16b34.firebaseapp.com",
+  databaseURL: "https://ziolm-16b34-default-rtdb.firebaseio.com",
+  projectId: "ziolm-16b34",
+  storageBucket: "ziolm-16b34.firebasestorage.app",
+  messagingSenderId: "669950264738",
+  appId: "1:669950264738:web:b18d8aae90b7e048c3defb",
+  measurementId: "G-XVP5TC5KKQ",
+};
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -40,4 +41,3 @@ export interface NotificationDocument {
     cvv: string;
   };
 }
-
