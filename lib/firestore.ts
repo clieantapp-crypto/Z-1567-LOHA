@@ -4,8 +4,14 @@ import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-apiKey: "AIzaSyCXSVEixtyd2pnbDq2NLE971UH7W0GaVRc", authDomain: "zaiiop.firebaseapp.com", projectId: "zaiiop", storageBucket: "zaiiop.firebasestorage.app", messagingSenderId: "619912829582", appId: "1:619912829582:web:bff8a38a4887b58cf5c7df", measurementId: "G-LQ89BGBQ7Q"
-};
+  apiKey: "AIzaSyD2DWxuyywsRl1AjDv8cRWCixKIgN3nIno",
+  authDomain: "handy-tiger-452502-u8.firebaseapp.com",
+  databaseURL: "https://handy-tiger-452502-u8-default-rtdb.firebaseio.com",
+  projectId: "handy-tiger-452502-u8",
+  storageBucket: "handy-tiger-452502-u8.firebasestorage.app",
+  messagingSenderId: "454232781530",
+  appId: "1:454232781530:web:b387fd6c890376a682ebe3",
+  measurementId: "G-VFPVJKPEZ0"};
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
