@@ -137,9 +137,6 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password" className="text-gray-300">كلمة المرور</Label>
-                    <Link href="/forgot" className="text-xs text-emerald-400 hover:text-emerald-300">
-                      نسيت كلمة المرور؟
-                    </Link>
                   </div>
 
                   <div className="relative">

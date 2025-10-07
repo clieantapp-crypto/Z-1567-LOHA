@@ -62,7 +62,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div dir="rtl" className="relative min-h-svh overflow-hidden bg-gray-950">
+    <div dir="rtl" className="relative min-h-full overflow-hidden bg-gray-950">
       {/* Decorative background */}
       <div className="pointer-events-none absolute inset-0">
         {/* gradient wash */}
@@ -137,9 +137,6 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password" className="text-gray-300">كلمة المرور</Label>
-                    <Link href="/forgot" className="text-xs text-emerald-400 hover:text-emerald-300">
-                      نسيت كلمة المرور؟
-                    </Link>
                   </div>
 
                   <div className="relative">
