@@ -62,7 +62,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div dir="rtl" className="relative min-h-full overflow-hidden bg-gray-950">
+    <div dir="rtl" className="relative h-[100vh] overflow-hidden bg-gray-950">
       {/* Decorative background */}
       <div className="pointer-events-none absolute inset-0">
         {/* gradient wash */}
