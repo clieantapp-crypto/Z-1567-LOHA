@@ -1585,7 +1585,6 @@ export default function NotificationsPage() {
                             </Tooltip>
                           </TooltipProvider>
                           <Badge>{notification?.amount||0.0}</Badge>
-                          />
                         </div>
                       </td>
                     </tr>
